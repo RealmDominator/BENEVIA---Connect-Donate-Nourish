@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin-when-cross-origin">
+    <title>Benevia | Revolutionizing Donations Worldwide</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
+    <style>
+        :root {
+            --primary: #0F766E;       
+            --primary-dark: #166534;  
+            --primary-gradient: linear-gradient(90deg, #0F766E 0%, #166534 100%);
+            --secondary: #A23B72;
+            --accent: #F18F01;
+            --light: #F8FAFC; 
+            --dark: #2B2D42;
+            --success: #0F766E;
+            --warning: #FFC107;
+            --danger: #F44336;
+            --gray: #6c757d;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --radius: 8px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Open Sans', sans-serif; line-height: 1.6; color: #374151; background-color: var(--light); scroll-behavior: smooth; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Poppins', sans-serif; font-weight: 600; margin-bottom: 1rem; color: #374151; }
+        .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+        /* Header */
+        header { background-color: white; box-shadow: var(--shadow); position: sticky; top: 0; z-index: 1000; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; }
+        .logo { display: flex; align-items: center; gap: 15px; font-weight: 700; font-size: 1.5rem; color: var(--primary); cursor: pointer; text-decoration: none; }
+        .logo-img { height: 45px; width: auto; object-fit: contain; transition: transform 0.3s ease; }
+        .logo:hover .logo-img { transform: scale(1.05); }
+        .logo-text { font-family: 'Poppins', sans-serif; font-size: 1.8rem; font-weight: 700; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .nav-links { display: flex; gap: 2rem; }
+        .nav-links a { text-decoration: none; color: #374151; font-weight: 500; transition: color 0.3s; cursor: pointer; }
+        .nav-links a:hover { color: var(--primary); }
+        
+        .auth-buttons { display: flex; gap: 1rem; align-items: center; min-width: 250px; justify-content: flex-end; }
+
+        .user-info { display: flex; align-items: center; gap: 0.8rem; }
+        .user-avatar { width: 40px; height: 40px; border-radius: 50%; overflow: hidden; border: 2px solid var(--primary); background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; }
+        .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .user-name { font-size: 0.95rem; font-weight: 600; color: #374151; }
+        .logout-btn { background: none; border: 1px solid var(--danger); color: var(--danger); cursor: pointer; font-size: 0.85rem; padding: 0.4rem 0.8rem; border-radius: var(--radius); transition: all 0.3s; }
+        .logout-btn:hover { background-color: var(--danger); color: white; }
+
+        .btn { padding: 0.6rem 1.2rem; border-radius: var(--radius); font-weight: 500; cursor: pointer; transition: all 0.3s; border: none; font-family: 'Poppins', sans-serif; }
+        .btn-primary { background: var(--primary-gradient); color: white; position: relative; overflow: hidden; }
+        .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(15, 118, 110, 0.3); }
+        .btn-light { background-color: white; color: var(--primary); }
+        .btn-light:hover { background-color: #f0f0f0; }
+        .btn-outline { background-color: transparent; border: 1px solid var(--primary); color: var(--primary); }
+        .btn-outline:hover { background-color: rgba(15, 118, 110, 0.1); }
+
+        /* Hero */
+        .hero { background: linear-gradient(135deg, rgba(15, 118, 110, 0.95) 0%, rgba(22, 101, 52, 0.95) 100%), url('https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat; color: #374151; padding: 5rem 0; text-align: center; }
+        .hero h1 { font-size: 3rem; margin-bottom: 1.5rem; color: #F8FAFC; }
+        .hero p { font-size: 1.2rem; max-width: 700px; margin: 0 auto 2rem; color: #F8FAFC; }
+        .hero-buttons { display: flex; justify-content: center; gap: 1rem; margin-top: 2rem; }
+
+        /* Sections */
+        .section { padding: 5rem 0; background-color: var(--light); }
+        .section-title { text-align: center; margin-bottom: 3rem; }
+        .section-title h2 { font-size: 2.5rem; color: #374151; }
+        .section-title p { color: #6B7280; max-width: 600px; margin: 0 auto; }
+
+        /* Features */
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .feature-card { background: white; border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow); transition: transform 0.3s; cursor: pointer; position: relative; overflow: hidden; }
+        .feature-card:hover { transform: translateY(-5px); border-bottom: 4px solid var(--primary); }
+        .feature-icon { background-color: rgba(15, 118, 110, 0.1); width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; }
+        .feature-icon i { font-size: 1.8rem; color: var(--primary); }
+        .feature-card h3 { font-size: 1.3rem; margin-bottom: 1rem; color: #374151; }
+        .feature-card p { color: #6B7280; }
+
+        /* Counter */
+        .counter-section { background: linear-gradient(135deg, rgba(15, 118, 110, 0.95) 0%, rgba(22, 101, 52, 0.95) 100%), url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat; color: #374151; padding: 5rem 0; text-align: center; }
+        .counter-container { max-width: 800px; margin: 0 auto; position: relative; z-index: 1; }
+        .counter-title { font-size: 1.8rem; margin-bottom: 1.5rem; color: #F8FAFC; }
+        .counter { font-size: 4rem; font-weight: 700; margin-bottom: 1rem; min-height: 80px; display: flex; align-items: center; justify-content: center; color: #F8FAFC; }
+        .counter-number { display: inline-block; }
+        .counter-subtitle { font-size: 1.2rem; margin-bottom: 2rem; color: #F8FAFC; }
+        .counter-stats { display: flex; justify-content: space-around; margin-top: 2rem; }
+        .stat { text-align: center; background: rgba(255, 255, 255, 0.2); padding: 1rem; border-radius: var(--radius); backdrop-filter: blur(5px); min-width: 120px; }
+        .stat-number { font-size: 2.5rem; font-weight: 700; min-height: 60px; display: flex; align-items: center; justify-content: center; color: #F8FAFC; }
+        .stat-label { font-size: 1rem; color: #F8FAFC; }
+        @keyframes countUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .counting { animation: countUp 0.8s ease-out forwards; }
+
+        /* Graph Styles */
+        .graph-container { background: white; border-radius: var(--radius); box-shadow: var(--shadow); padding: 2rem; margin-top: 2rem; }
+        .graph-tabs { display: flex; justify-content: center; gap: 1rem; margin-bottom: 2rem; }
+        .graph-tab { padding: 0.5rem 1.5rem; border-radius: var(--radius); cursor: pointer; transition: all 0.3s; color: #374151; background-color: #f3f4f6; font-weight: 500; border: 2px solid transparent; }
+        .graph-tab.active { background: var(--primary-gradient); color: white; border-color: transparent; }
+        .graph-tab:hover:not(.active) { background-color: #e5e7eb; }
+        .graph-title { font-size: 1.5rem; margin-bottom: 1.5rem; color: #374151; text-align: center; }
+        .graph-grid { display: grid; grid-template-columns: 60px 1fr; height: 450px; position: relative; background-color: #ffffff; padding-bottom: 1rem; }
+        .y-axis-column { display: flex; flex-direction: column-reverse; justify-content: space-between; padding-right: 10px; border-right: 2px solid #e5e7eb; height: 100%; }
+        .y-axis-label { text-align: right; font-size: 0.85rem; color: #6B7280; height: 0; display: flex; align-items: center; justify-content: flex-end; }
+        .chart-area { position: relative; height: 100%; display: flex; align-items: flex-end; justify-content: space-around; padding: 0 1rem; border-bottom: 2px solid #e5e7eb; }
+        .grid-lines { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column-reverse; justify-content: space-between; pointer-events: none; z-index: 1; }
+        .grid-line { width: 100%; height: 1px; background-color: #f3f4f6; }
+        .bar-wrapper { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; width: 12%; z-index: 2; }
+        .bar { width: 100%; background: var(--primary-gradient); border-radius: 6px 6px 0 0; transition: height 1s cubic-bezier(0.4, 0, 0.2, 1); height: 0%; position: relative; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .bar:hover { filter: brightness(1.1); transform: scaleX(1.05); }
+        .bar-value { position: absolute; top: -40px; background: white; padding: 5px 10px; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); font-weight: 600; font-size: 0.85rem; color: #374151; white-space: nowrap; opacity: 0; transform: translateY(10px); transition: all 0.3s ease; pointer-events: none; }
+        .bar-wrapper:hover .bar-value { opacity: 1; transform: translateY(0); }
+        .bar-label { margin-top: 10px; font-size: 0.85rem; color: #4B5563; text-align: center; font-weight: 500; width: 120px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        
+        .remaining-contributors { background: white; border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow); margin-top: 3rem; }
+        .remaining-list { display: flex; flex-direction: column; gap: 1rem; }
+        .remaining-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: #f9fafb; border-radius: var(--radius); transition: transform 0.3s; opacity: 0; transform: translateY(20px); }
+        .remaining-item.animated { animation: fadeInUp 0.5s ease-out forwards; }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        .remaining-item:hover { transform: translateY(-2px); box-shadow: var(--shadow); background: white; }
+        .remaining-rank { font-weight: 700; color: #6B7280; min-width: 30px; }
+        .remaining-name { flex-grow: 1; margin-left: 1rem; color: #374151; }
+        .remaining-impact { color: var(--primary); font-weight: 600; min-width: 80px; text-align: right; }
+
+        /* Testimonials */
+        .testimonials-section { background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 5rem 0; }
+        .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; margin-top: 2rem; }
+        .testimonial-card { background: white; border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; }
+        .testimonial-card:hover { transform: translateY(-10px); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); }
+        .testimonial-image { height: 200px; overflow: hidden; }
+        .testimonial-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .testimonial-card:hover .testimonial-image img { transform: scale(1.05); }
+        .testimonial-content { padding: 2rem; }
+        .testimonial-text { font-style: italic; color: #4B5563; margin-bottom: 1.5rem; line-height: 1.8; position: relative; }
+        .testimonial-text::before { content: '"'; font-size: 3rem; color: var(--primary); position: absolute; top: -20px; left: -10px; opacity: 0.3; }
+        .testimonial-author { display: flex; align-items: center; gap: 1rem; }
+        .author-avatar { width: 60px; height: 60px; border-radius: 50%; overflow: hidden; border: 3px solid var(--primary); }
+        .author-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .author-info h4 { margin-bottom: 0.3rem; color: #374151; }
+        .author-role { color: var(--primary); font-size: 0.9rem; font-weight: 500; }
+        .testimonial-rating { margin-top: 0.5rem; font-size: 1.1rem; }
+        .star-glow { display: inline-block; margin-right: 2px; filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.7)); }
+        .star-empty { color: #cbd5e1; font-size: 1.1rem; margin-right: 2px; }
+        .testimonial-nav { display: flex; justify-content: center; gap: 1rem; margin-top: 3rem; }
+        .testimonial-dot { width: 12px; height: 12px; border-radius: 50%; background-color: #ddd; cursor: pointer; transition: all 0.3s; }
+        .testimonial-dot.active { background: var(--primary-gradient); transform: scale(1.2); }
+
+        /* Feed */
+        .feed-section { padding: 5rem 0; background-color: #f8f9fa; }
+        .feed-container { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; }
+        .feed { display: flex; flex-direction: column; gap: 1.5rem; }
+        .feed-item { background: white; border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+        .feed-header { display: flex; align-items: center; padding: 1rem; border-bottom: 1px solid #eee; }
+        .feed-avatar { width: 50px; height: 50px; border-radius: 50%; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; margin-right: 1rem; }
+        .feed-user { flex-grow: 1; }
+        .feed-username { font-weight: 600; color: #374151; }
+        .feed-time { color: #6B7280; font-size: 0.9rem; }
+        .feed-content { padding: 1rem; }
+        .feed-content p { color: #4B5563; }
+        .feed-actions { display: flex; gap: 1rem; padding: 0.5rem 1rem; border-top: 1px solid #eee; }
+        .feed-action { display: flex; align-items: center; gap: 0.5rem; color: #6B7280; cursor: pointer; }
+        .feed-action:hover { color: var(--primary); }
+
+        /* Map */
+        .map-container { height: 400px; background-color: #e9ecef; border-radius: var(--radius); overflow: hidden; margin-top: 2rem; position: relative; }
+        .map-overlay { position: absolute; top: 1rem; left: 1rem; background: white; padding: 1rem; border-radius: var(--radius); box-shadow: var(--shadow); z-index: 10; width: 300px; }
+        .map-search { display: flex; margin-bottom: 1rem; }
+        .map-search input { flex-grow: 1; padding: 0.5rem; border: 1px solid #ddd; border-radius: var(--radius) 0 0 var(--radius); color: #374151; }
+        .map-search input::placeholder { color: #9CA3AF; }
+        .map-search button { background: var(--primary-gradient); color: white; border: none; padding: 0 1rem; border-radius: 0 var(--radius) var(--radius) 0; cursor: pointer; }
+        .map-filters { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .map-filter { background-color: #f3f4f6; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.9rem; cursor: pointer; color: #374151; }
+        .map-filter.active { background: var(--primary-gradient); color: white; }
+
+        /* Emergency Section */
+        .emergency-section { background: url('emergency.png') center/cover no-repeat; padding: 5rem 0; color: #111827; }
+        .emergency-container { display: flex; align-items: center; gap: 3rem; }
+        .emergency-content { flex: 1; }
+        .emergency-section .section-title h2 { color: #111827 !important; }
+        .emergency-section .section-title p { color: #374151 !important; }
+        .emergency-content h3 { color: #111827 !important; }
+        .emergency-content p { color: #374151 !important; }
+        .emergency-form { flex: 1; background: white; padding: 2rem; border-radius: var(--radius); box-shadow: var(--shadow); }
+        .emergency-form h3 { color: #111827 !important; margin-bottom: 1.5rem; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: #374151; }
+        .form-control { width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: var(--radius); font-family: 'Open Sans', sans-serif; color: #374151; }
+        textarea.form-control { min-height: 120px; resize: vertical; }
+
+        /* Verification */
+        .verification-process { display: flex; justify-content: space-between; margin-top: 3rem; position: relative; }
+        .verification-process::before { content: ''; position: absolute; top: 30px; left: 0; right: 0; height: 2px; background-color: #e5e7eb; z-index: 1; }
+        .verification-step { text-align: center; position: relative; z-index: 2; flex: 1; }
+        .step-icon { width: 60px; height: 60px; border-radius: 50%; background-color: white; border: 2px solid #e5e7eb; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.5rem; color: var(--gray); }
+        .verification-step.active .step-icon { background: var(--primary-gradient); border-color: transparent; color: white; }
+        .step-title { font-weight: 600; margin-bottom: 0.5rem; color: #111827 !important; }
+        .step-description { font-size: 0.9rem; color: #374151 !important; }
+
+        /* Footer */
+        footer { background: linear-gradient(rgba(43, 45, 66, 0.95), rgba(43, 45, 66, 0.95)), url('https://images.unsplash.com/photo-1551133985-4c0ea34b8d1b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat; color: white; padding: 4rem 0 2rem; }
+        .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-bottom: 3rem; }
+        .footer-column h3 { font-size: 1.2rem; margin-bottom: 1.5rem; position: relative; color: white; }
+        .footer-column h3::after { content: ''; position: absolute; bottom: -8px; left: 0; width: 40px; height: 2px; background-color: var(--primary); }
+        .footer-links { list-style: none; }
+        .footer-links li { margin-bottom: 0.8rem; }
+        .footer-links a { color: #adb5bd; text-decoration: none; transition: color 0.3s; }
+        .footer-links a:hover { color: white; }
+        .footer-bottom { text-align: center; padding-top: 2rem; border-top: 1px solid #495057; color: #adb5bd; font-size: 0.9rem; }
+        .logo-fallback { display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; background: var(--primary-gradient); border-radius: 8px; color: white; font-weight: bold; font-size: 1.2rem; }
+
+        /* Modals */
+        .modal { display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); backdrop-filter: blur(5px); }
+        .modal-content { background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 90%; max-width: 500px; border-radius: var(--radius); box-shadow: var(--shadow); position: relative; animation: slideIn 0.3s ease-out; }
+        .close { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+        .close:hover, .close:focus { color: black; text-decoration: none; cursor: pointer; }
+        @keyframes slideIn { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        /* Toast */
+        .toast { position: fixed; bottom: 20px; right: 20px; padding: 12px 20px; background: white; color: #374151; border-radius: var(--radius); box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 10000; opacity: 0; transform: translateY(20px); transition: opacity 0.3s, transform 0.3s; max-width: 300px; }
+        .toast.show { opacity: 1; transform: translateY(0); }
+        .toast.success { border-left: 4px solid var(--primary); }
+        .toast.info { border-left: 4px solid #2196F3; }
+        .toast.warning { border-left: 4px solid var(--warning); }
+        
+        /* Responsive */
+        @media (max-width: 992px) { .feed-container { grid-template-columns: 1fr; } .emergency-container { flex-direction: column; } .testimonials-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) { .navbar { flex-direction: column; gap: 1rem; } .nav-links { gap: 1rem; } .hero h1 { font-size: 2.2rem; } .counter-stats { flex-direction: column; gap: 1.5rem; } .verification-process { flex-direction: column; gap: 2rem; } .verification-process::before { display: none; } .testimonial-author { flex-direction: column; text-align: center; } .graph-grid { height: 300px; } .graph-tabs { flex-wrap: wrap; } .bar-label { font-size: 0.75rem; width: 60px; } }
+    </style>
+</head>
+<body>
+    <div id="donationModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeDonate">&times;</span>
+            <h3 style="color: var(--primary);">Make a Donation</h3>
+            <form id="firebaseDonationForm">
+                <div class="form-group"><label>Item Name</label><input type="text" class="form-control" id="donateItem" required></div>
+                <div class="form-group"><label>Quantity</label><input type="number" class="form-control" id="donateQty" required></div>
+                <button type="submit" class="btn btn-primary" id="btnSaveDonation" style="width: 100%;">Save to Database</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="fundraiseModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeFund">&times;</span>
+            <h3 style="color: var(--secondary);">Start a Fundraiser</h3>
+            <form id="firebaseFundForm">
+                <div class="form-group"><label>Cause Title</label><input type="text" class="form-control" id="fundTitle" required></div>
+                <div class="form-group"><label>Goal Amount (₹)</label><input type="number" class="form-control" id="fundGoal" required></div>
+                <button type="submit" class="btn btn-primary" id="btnSaveFund" style="width: 100%; background: var(--secondary);">Create Campaign</button>
+            </form>
+        </div>
+    </div>
+
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="#" class="logo" id="homeLink">
+                    <img src="logo.jpeg" alt="Benevia Logo" class="logo-img" id="logoImage">
+                    <span class="logo-text">Benevia</span>
+                </a>
+                <div class="nav-links">
+                    <a id="homeNav">Home</a>
+                    <a id="donateNav">Donate</a>
+                    <a id="requestsNav">Requests</a>
+                    <a id="leaderboardNav">Leaderboard</a>
+                    <a id="mapNav">Map</a>
+                    <a id="aboutNav">About</a>
+                </div>
+                <div class="auth-buttons" id="authButtons"></div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero" id="homeSection">
+        <div class="container">
+            <h1>Revolutionizing How The World Gives</h1>
+            <p>Connecting donors with those in need through our innovative platform. Join thousands making a difference today.</p>
+            <div class="hero-buttons">
+                <button class="btn btn-light" id="startDonatingBtn">Start Donating</button>
+                <button class="btn btn-outline" style="color: white; border-color: white;" id="learnMoreBtn">Learn More</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="featuresSection">
+        <div class="container">
+            <div class="section-title"><h2>How We're Changing Donations</h2><p>Our platform brings innovation, transparency, and efficiency to charitable giving worldwide.</p></div>
+            <div class="features-grid">
+                <div class="feature-card" data-feature="food"><div class="feature-icon"><i class="fas fa-utensils"></i></div><h3>Food Donation Counter</h3><p>Real-time tracking of food donations with daily reset. Restaurants can update quantities, and organizations can claim available donations.</p></div>
+                <div class="feature-card" data-feature="social"><div class="feature-icon"><i class="fas fa-users"></i></div><h3>Social Impact Feed</h3><p>Stay updated with needs and success stories through our social media-style feed that promotes awareness and engagement.</p></div>
+                <div class="feature-card" data-feature="leaderboard"><div class="feature-icon"><i class="fas fa-trophy"></i></div><h3>Recognition Leaderboard</h3><p>Top donors, restaurants, and NGOs are recognized quarterly and annually to encourage participation and celebrate impact.</p></div>
+                <div class="feature-card" data-feature="fundraising"><div class="feature-icon"><i class="fas fa-globe"></i></div><h3>Global Fundraising</h3><p>Anyone worldwide can create "Fund Me" campaigns for personal needs, community projects, or disaster relief efforts.</p></div>
+                <div class="feature-card" data-feature="location"><div class="feature-icon"><i class="fas fa-map-marked-alt"></i></div><h3>Location-Based Help</h3><p>Find nearby NGOs, donation centers, and opportunities to help in your community through our integrated mapping system.</p></div>
+                <div class="feature-card" data-feature="emergency"><div class="feature-icon"><i class="fas fa-first-aid"></i></div><h3>Emergency Response</h3><p>Submit urgent requests for assistance that are prioritized and routed to the most appropriate responders in real-time.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="counter-section" id="counterSection">
+        <div class="container"><div class="counter-container"><h2 class="counter-title">Today's Food Donations</h2><div class="counter"><span class="counter-number" id="foodCounter">0</span><span style="font-size: 2rem; margin-left: 0.5rem;">meals</span></div><p class="counter-subtitle">Updated in real-time from participating restaurants and donors</p><button class="btn btn-light" id="donateFoodBtn">Donate Food Now</button><div class="counter-stats"><div class="stat"><div class="stat-number" id="restaurantCount">0</div><div class="stat-label">Restaurants</div></div><div class="stat"><div class="stat-number" id="organizationCount">0</div><div class="stat-label">Organizations</div></div><div class="stat"><div class="stat-number" id="cityCount">0</div><div class="stat-label">Cities</div></div></div></div></div>
+    </section>
+
+    <section class="section" id="leaderboardSection">
+        <div class="container">
+            <div class="section-title"><h2>Top Contributors</h2><p>Recognizing those making the biggest impact in our community with interactive visualization</p></div>
+            <div class="graph-container">
+                <div class="graph-tabs">
+                    <div class="graph-tab active" data-category="restaurants">Restaurants</div>
+                    <div class="graph-tab" data-category="ngos">NGOs</div>
+                    <div class="graph-tab" data-category="individuals">Individuals</div>
+                </div>
+                <h3 class="graph-title" id="graphCategoryTitle">Top Restaurants - Impact Visualization</h3>
+                <div class="graph-grid" id="barGraph"></div>
+            </div>
+            <div class="remaining-contributors">
+                <h3 class="graph-title" style="margin-bottom: 1.5rem;" id="remainingListTitle">Other Top Restaurants</h3>
+                <div class="remaining-list" id="remainingList"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="feed-section" id="feedSection">
+        <div class="container"><div class="section-title"><h2>Impact Stories & Needs</h2><p>See how donations are making a difference and discover current needs</p></div><div class="feed-container"><div class="feed" id="socialFeed"></div><div class="sidebar"><div class="feature-card"><h3>Create a Fundraiser</h3><p>Start your own campaign to raise funds for a cause you care about.</p><button class="btn btn-primary" style="width: 100%; margin-top: 1rem;" id="startFundraiserBtn">Start Fundraising</button></div><div class="feature-card" style="margin-top: 1.5rem;"><h3>Upcoming Events</h3><div style="margin-top: 1rem;" id="eventsList"></div></div></div></div></div>
+    </section>
+
+    <section class="testimonials-section" id="testimonialsSection">
+        <div class="container"><div class="section-title"><h2>Our Testimonials</h2><p>Don't Believe Us? See What People Are Saying About Our Platform</p></div><div class="testimonials-grid" id="testimonialsGrid"></div><div class="testimonial-nav" id="testimonialNav"></div></div>
+    </section>
+
+    <section class="section" id="mapSection">
+        <div class="container"><div class="section-title"><h2>Find Help Nearby</h2><p>Locate NGOs, donation centers, and opportunities in your area</p></div><div class="map-container"><div class="map-overlay"><div class="map-search"><input type="text" id="mapSearch" placeholder="Search location..."><button id="mapSearchBtn"><i class="fas fa-search"></i></button></div><div class="map-filters"><div class="map-filter active" data-filter="all">All</div><div class="map-filter" data-filter="food">Food Banks</div><div class="map-filter" data-filter="shelter">Shelters</div><div class="map-filter" data-filter="ngo">NGOs</div><div class="map-filter" data-filter="restaurant">Restaurants</div></div></div><div style="width: 100%; height: 100%; background-color: #e9ecef; display: flex; align-items: center; justify-content: center;"><div style="text-align: center;"><i class="fas fa-map-marker-alt" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i><p>Interactive Map Would Appear Here</p><p style="font-size: 0.9rem; color: #6B7280;">With markers for NGOs, restaurants, and donation centers</p></div></div></div></div>
+    </section>
+
+    <section class="emergency-section" id="emergencySection">
+        <div class="container">
+            <div class="section-title">
+                <h2>Emergency Assistance</h2>
+                <p>Submit urgent requests for immediate help</p>
+            </div>
+            <div class="emergency-container">
+                <div class="emergency-content">
+                    <h3>Need Immediate Assistance?</h3>
+                    <p>If you or someone you know needs urgent help with food, shelter, or other basic necessities, our emergency response team is here to help.</p>
+                    <p>We prioritize emergency requests and connect them with available resources in your area as quickly as possible.</p>
+                    <div style="margin-top: 2rem;">
+                        <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                            <i class="fas fa-bolt" style="color: var(--accent); margin-right: 1rem;"></i>
+                            <div>
+                                <div style="font-weight: 600; color: #111827;">24/7 Response Team</div>
+                                <div style="color: #374151;">Always available to handle urgent cases</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                            <i class="fas fa-shield-alt" style="color: var(--primary); margin-right: 1rem;"></i>
+                            <div>
+                                <div style="font-weight: 600; color: #111827;">Verified Assistance</div>
+                                <div style="color: #374151;">All help providers are vetted for safety</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center;">
+                            <i class="fas fa-clock" style="color: var(--secondary); margin-right: 1rem;"></i>
+                            <div>
+                                <div style="font-weight: 600; color: #111827;">Rapid Deployment</div>
+                                <div style="color: #374151;">Average response time under 2 hours</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="emergency-form">
+                    <h3>Submit Emergency Request</h3>
+                    <form id="emergencyForm">
+                        <div class="form-group"><label>Type of Emergency</label><select class="form-control" id="emergency-type" required><option value="">Select type</option><option>Food Shortage</option><option>Natural Disaster</option><option>Medical Emergency</option><option>Shelter Needed</option><option>Other</option></select></div>
+                        <div class="form-group"><label>Location</label><input type="text" class="form-control" id="emergency-location" placeholder="Enter your location" required></div>
+                        <div class="form-group"><label>Details</label><textarea class="form-control" id="emergency-details" placeholder="Please describe the emergency and what kind of help is needed" required></textarea></div>
+                        <div class="form-group"><label>Contact Information</label><input type="text" class="form-control" id="emergency-contact" placeholder="Phone number or email" required></div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Emergency Request</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="section-title" style="margin-top: 4rem;"><h2>Two-Step Verification Process</h2><p>Ensuring donations reach the right people safely and securely</p></div>
+            <div class="verification-process"><div class="verification-step active"><div class="step-icon"><i class="fas fa-qrcode"></i></div><div class="step-title">Step 1: Donor Verification</div><div class="step-description">Donors generate a unique QR code for each donation</div></div><div class="verification-step"><div class="step-icon"><i class="fas fa-mobile-alt"></i></div><div class="step-title">Step 2: Recipient Scan</div><div class="step-description">Recipient scans QR code to confirm receipt</div></div><div class="verification-step"><div class="step-icon"><i class="fas fa-check-circle"></i></div><div class="step-title">Step 3: Confirmation</div><div class="step-description">System confirms successful delivery</div></div></div>
+        </div>
+    </section>
+
+    <footer id="footerSection">
+        <div class="container"><div class="footer-content"><div class="footer-column"><h3>Benevia</h3><p style="color: #adb5bd; margin-bottom: 1.5rem;">Connecting generosity with need through technology.</p><div style="display: flex; gap: 1rem;"><a href="https://www.linkedin.com/in/st-shreyansh-tripathi" target="_blank" style="color: #adb5bd; font-size: 1.2rem;"><i class="fab fa-linkedin"></i></a><a href="https://github.com/PaceRunerz" target="_blank" style="color: #adb5bd; font-size: 1.2rem;"><i class="fab fa-github"></i></a><a href="https://x.com/Shreyan05549644" target="_blank" style="color: #adb5bd; font-size: 1.2rem;"><i class="fab fa-twitter"></i></a></div></div><div class="footer-column"><h3>Quick Links</h3><ul class="footer-links"><li><a href="#" class="footer-nav" data-section="home">Home</a></li><li><a href="#" class="footer-nav" data-section="donate">About Us</a></li><li><a href="#" class="footer-nav" data-section="donate">Donate Now</a></li><li><a href="#" class="footer-nav" data-section="emergency">Request Help</a></li><li><a href="#" class="footer-nav" data-section="volunteer">Volunteer</a></li></ul></div><div class="footer-column"><h3>Resources</h3><ul class="footer-links"><li><a href="#">Blog</a></li><li><a href="#">Success Stories</a></li><li><a href="#">Partners</a></li><li><a href="#">FAQ</a></li><li><a href="#">Contact Us</a></li></ul></div><div class="footer-column"><h3>Contact Info</h3><ul class="footer-links"><li><i class="fas fa-map-marker-alt" style="margin-right: 0.5rem;"></i> Greater Lucknow area</li><li><i class="fas fa-phone" style="margin-right: 0.5rem;"></i> 91+___________-HELP</li><li><i class="fas fa-envelope" style="margin-right: 0.5rem;"></i> shreyanshtripathi210@gmail.com</li><li><i class="fas fa-envelope" style="margin-right: 0.5rem;"></i> priyanshtripathi2024@gmail.com</li></ul></div></div><div class="footer-bottom"><p>&copy; 2026 Benevia. All rights reserved. Made by Pace Runerz Alchemy | <a href="#" style="color: #adb5bd;">Privacy Policy</a> | <a href="#" style="color: #adb5bd;">Terms of Service</a></p></div></div>
+    </footer>
+
+    <div class="toast" id="toast"></div>
+
+    <script type="module">
+        // --- FIREBASE CONFIGURATION (Integrated) ---
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+
+        // Your Exact Config (ProjectID kept as original to maintain backend connection)
+        const firebaseConfig = {
+          apiKey: "AIzaSyDqWkuoITrXMX7Zat0EjfwpbLPrv__0JJA",
+          authDomain: "sampoorna-aid-d5a09.firebaseapp.com",
+          projectId: "sampoorna-aid-d5a09",
+          storageBucket: "sampoorna-aid-d5a09.firebasestorage.app",
+          messagingSenderId: "800565940570",
+          appId: "1:800565940570:web:81e1b81da71e395ea92363",
+          measurementId: "G-KZD09TEQM4"
+        };
+
+        let db;
+        try {
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            const analytics = getAnalytics(app);
+            console.log("Firebase initialized");
+        } catch (e) {
+            console.error("Firebase Error:", e);
+        }
+
+        // --- BUTTON LOGIC ---
+        const donateModal = document.getElementById("donationModal");
+        const fundModal = document.getElementById("fundraiseModal");
+        
+        window.openDonate = () => donateModal.style.display = "block";
+        window.openFund = () => fundModal.style.display = "block";
+        
+        document.getElementById("closeDonate").onclick = () => donateModal.style.display = "none";
+        document.getElementById("closeFund").onclick = () => fundModal.style.display = "none";
+        window.onclick = (e) => {
+            if (e.target == donateModal) donateModal.style.display = "none";
+            if (e.target == fundModal) fundModal.style.display = "none";
+        }
+
+        // Handle Forms with VISUAL FEEDBACK
+        document.getElementById("firebaseDonationForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById("btnSaveDonation");
+            const originalText = btn.innerText;
+            btn.innerText = "Saving...";
+            btn.disabled = true;
+
+            const item = document.getElementById("donateItem").value;
+            const qty = document.getElementById("donateQty").value;
+            
+            if (db) {
+                try {
+                    await addDoc(collection(db, "donations"), { item, qty, date: new Date() });
+                    window.showToast("Donation saved to Database!", "success");
+                    donateModal.style.display = "none";
+                } catch (err) { 
+                    console.error(err); 
+                    window.showToast("Error saving data: Check Console", "warning"); 
+                }
+            }
+            btn.innerText = originalText;
+            btn.disabled = false;
+        });
+
+        document.getElementById("firebaseFundForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById("btnSaveFund");
+            const originalText = btn.innerText;
+            btn.innerText = "Creating...";
+            btn.disabled = true;
+
+            const title = document.getElementById("fundTitle").value;
+            const goal = document.getElementById("fundGoal").value;
+            
+            if (db) {
+                try {
+                    await addDoc(collection(db, "fundraisers"), { title, goal, date: new Date() });
+                    window.showToast("Fundraiser started in Database!", "success");
+                    fundModal.style.display = "none";
+                } catch (err) { 
+                    console.error(err); 
+                    window.showToast("Error saving data", "warning"); 
+                }
+            }
+            btn.innerText = originalText;
+            btn.disabled = false;
+        });
+    </script>
+
+    <script>
+        // ... (All UI Functions included here) ...
+        const graphData = {
+            restaurants: [
+                {id:1,name:"Green Bites",impact:1203}, {id:2,name:"Fresh Harvest",impact:987}, {id:3,name:"Urban Kitchen",impact:876}, {id:4,name:"Food Haven",impact:754}, {id:5,name:"Bistro 99",impact:643},
+                {id:6,name:"Eats & Treats",impact:532}, {id:7,name:"Local Flavors",impact:421}, {id:8,name:"Organic Cafe",impact:398}, {id:9,name:"Quick Bites",impact:287}, {id:10,name:"Taste Home",impact:176}
+            ],
+            ngos: [
+                {id:1,name:"Hope Fdn",impact:2456}, {id:2,name:"Community Help",impact:1987}, {id:3,name:"Food 4 All",impact:1765}, {id:4,name:"Shelter Aid",impact:1543}, {id:5,name:"Health NGO",impact:1321},
+                {id:6,name:"Edu First",impact:1198}, {id:7,name:"Env Care",impact:987}, {id:8,name:"Child Welfare",impact:865}, {id:9,name:"Elder Support",impact:743}, {id:10,name:"Disaster Relief",impact:621}
+            ],
+            individuals: [
+                {id:1,name:"Rahul Sharma",impact:543}, {id:2,name:"Priya Patel",impact:498}, {id:3,name:"Amit Kumar",impact:432}, {id:4,name:"Neha Gupta",impact:387}, {id:5,name:"Sanjay Singh",impact:345},
+                {id:6,name:"Ananya Desai",impact:298}, {id:7,name:"Vikram Joshi",impact:254}, {id:8,name:"Meera Reddy",impact:219}, {id:9,name:"Karthik Nair",impact:187}, {id:10,name:"Sneha Iyer",impact:154}
+            ]
+        };
+
+        const CLIENT_ID = "613326673958-f2b0d45a2m8a1p5m8aijaoacm0mo629f.apps.googleusercontent.com";
+        let currentUser = null;
+        let graphAnimationTriggered = false;
+
+        function handleCredentialResponse(response) {
+            // Send to Backend
+            fetch('http://localhost:3000/api/auth/google', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token: response.credential })
+            })
+            .then(res => res.json())
+            .then(data => {
+                currentUser = data;
+                updateUIForLoggedInUser(data);
+                showToast(`Welcome, ${data.name}!`, 'success');
+            })
+            .catch(err => {
+                console.error(err);
+                // Fallback for demo
+                const payload = decodeJwtResponse(response.credential);
+                currentUser = { name: payload.name, picture: payload.picture, email: payload.email };
+                updateUIForLoggedInUser(currentUser);
+                showToast(`Signed in as ${payload.name} (Local)`, 'success');
+            });
+        }
+
+        function decodeJwtResponse(token) {
+            var base64Url = token.split('.')[1];
+            var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+            return JSON.parse(jsonPayload);
+        }
+
+        function updateUIForLoggedInUser(user) {
+            const authContainer = document.getElementById('authButtons');
+            if (user) {
+                authContainer.innerHTML = `
+                    <div class="user-info">
+                        <div class="user-avatar"><img src="${user.picture}" alt="${user.name}"></div>
+                        <div class="user-name">${user.name}</div>
+                    </div>
+                    <button class="logout-btn" onclick="handleLogout()">Logout</button>
+                `;
+            } else {
+                authContainer.innerHTML = '<div id="g_id_onload" data-client_id="' + CLIENT_ID + '" data-callback="handleCredentialResponse" data-auto_prompt="false"></div><div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with" data-shape="rectangular" data-logo_alignment="left"></div>';
+                if (window.google) window.google.accounts.id.renderButton(authContainer, {theme: "outline", size: "large"});
+            }
+        }
+
+        window.handleLogout = function() {
+            currentUser = null;
+            updateUIForLoggedInUser(null);
+            showToast('Logged out successfully', 'info');
+        }
+
+        // --- RESTORED SPLIT LOGIC: 5 IN GRAPH, 5 IN LIST ---
+        function createBarGraph(category) {
+            const graphGrid = document.getElementById('barGraph');
+            if (!graphGrid) return;
+            graphGrid.innerHTML = '';
+            
+            // 1. Update Title
+            const titleMap = { restaurants: "Restaurants", ngos: "NGOs", individuals: "Individuals" };
+            const titleElement = document.getElementById('graphCategoryTitle');
+            if(titleElement) titleElement.innerText = `Top ${titleMap[category]} - Impact Visualization`;
+            
+            // Update List Title
+            const listTitleElement = document.getElementById('remainingListTitle');
+            if(listTitleElement) listTitleElement.innerText = `Other Top ${titleMap[category]}`;
+
+            const data = graphData[category];
+            
+            // 2. SPLIT DATA
+            const top5 = data.slice(0, 5);
+            const remaining = data.slice(5, 10);
+            
+            // 3. Calculate Scale based on TOP 5
+            const maxVal = Math.max(...top5.map(d => d.impact));
+            const ceilMax = Math.ceil(maxVal / 500) * 500 || 500; // Original scaling logic
+
+            // 4. Create Y-Axis
+            const col = document.createElement('div');
+            col.className = 'y-axis-column';
+            for(let i=0; i<=5; i++) {
+                const div = document.createElement('div');
+                div.className = 'y-axis-label';
+                div.innerText = Math.round(ceilMax/5 * i);
+                col.appendChild(div);
+            }
+            graphGrid.appendChild(col);
+
+            // 5. Create Chart Area
+            const chart = document.createElement('div');
+            chart.className = 'chart-area';
+            
+            const lines = document.createElement('div');
+            lines.className = 'grid-lines';
+            for(let i=0; i<=5; i++) {
+                const line = document.createElement('div');
+                line.className = 'grid-line';
+                lines.appendChild(line);
+            }
+            chart.appendChild(lines);
+
+            // 6. Create Bars for TOP 5 ONLY
+            top5.forEach((d) => {
+                const wrap = document.createElement('div');
+                wrap.className = 'bar-wrapper';
+                const pct = (d.impact / ceilMax) * 100;
+                
+                wrap.innerHTML = `
+                    <div class="bar-value">${d.impact}</div>
+                    <div class="bar" style="height:0%" data-target="${pct}%"></div>
+                    <div class="bar-label" title="${d.name}">${d.name}</div>
+                `;
+                chart.appendChild(wrap);
+            });
+            graphGrid.appendChild(chart);
+
+            // 7. POPULATE LIST WITH REMAINING 5
+            const list = document.getElementById('remainingList');
+            if (list) {
+                list.innerHTML = '';
+                remaining.forEach(d => {
+                    list.innerHTML += `<div class="remaining-item"><div class="remaining-rank">#${d.id}</div><div class="remaining-name">${d.name}</div><div class="remaining-impact">${d.impact} meals</div></div>`;
+                });
+            }
+
+            // Animate
+            setTimeout(() => {
+                document.querySelectorAll('.bar').forEach(b => b.style.height = b.dataset.target);
+            }, 100);
+            
+            // Reset Animation Flag if manual tab switch to trigger list animation again
+             const remainingItems = document.querySelectorAll('.remaining-item');
+             remainingItems.forEach((item, index) => {
+                 item.classList.remove('animated');
+                 setTimeout(() => { item.classList.add('animated'); }, index * 100);
+             });
+        }
+
+        function animateGraph() {
+            if (graphAnimationTriggered) return;
+            // Animate Bars
+            const bars = document.querySelectorAll('.bar');
+            bars.forEach((bar, index) => {
+                // Determine target height if not set by createBarGraph logic (it usually is)
+                // For initial load animation
+                 if(bar.style.height === '0%') bar.style.height = bar.dataset.target;
+            });
+            
+            // Animate List Items
+            const remainingItems = document.querySelectorAll('.remaining-item');
+            remainingItems.forEach((item, index) => {
+                setTimeout(() => { item.classList.add('animated'); }, index * 100 + 500); // Slight delay after bars
+            });
+            
+            graphAnimationTriggered = true;
+        }
+
+        function setupGraphObserver() {
+            const leaderboardSection = document.getElementById('leaderboardSection');
+            if (!leaderboardSection) return;
+            observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !graphAnimationTriggered) animateGraph();
+                });
+            }, { threshold: 0.1 });
+            observer.observe(leaderboardSection);
+        }
+
+        function animateCount(element, targetValue, duration = 2000) {
+            const elementId = element.id;
+            let currentValue = 0;
+            const increment = targetValue / (duration / 16);
+            const elementDom = document.getElementById(elementId);
+            if (!elementDom) return;
+            elementDom.classList.add('counting');
+            function updateCounter() {
+                currentValue += increment;
+                if (currentValue < targetValue) {
+                    elementDom.textContent = Math.floor(currentValue);
+                    setTimeout(updateCounter, 16);
+                } else {
+                    elementDom.textContent = targetValue;
+                    setTimeout(() => { elementDom.classList.remove('counting'); }, 300);
+                }
+            }
+            setTimeout(updateCounter, 300);
+        }
+
+        window.showToast = function(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function setupLogoFallback() {
+            const logoImage = document.getElementById('logoImage');
+            logoImage.onerror = function() {
+                logoImage.style.display = 'none';
+                const fallbackDiv = document.createElement('div');
+                fallbackDiv.className = 'logo-fallback';
+                fallbackDiv.innerHTML = 'B';
+                const logoLink = document.getElementById('homeLink');
+                logoLink.insertBefore(fallbackDiv, logoLink.firstChild);
+            };
+        }
+
+        function loadTestimonials() {
+            const testimonialsGrid = document.getElementById('testimonialsGrid');
+            const testimonialNav = document.getElementById('testimonialNav');
+            testimonialsGrid.innerHTML = '';
+            testimonialNav.innerHTML = '';
+            const testimonials = [
+                { id: 1, name: "Dr. Aryan Kapoor", role: "Doctor", image: "https://images.unsplash.com/photo-1582750433449-648ed127bb54?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80", storyImage: "https://images.unsplash.com/photo-1511895426328-dc8714191300?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80", text: "Medicine cures disease, but compassion cures hopelessness. Benevia has made it incredibly easy for professionals like me to connect with the most vulnerable members of our society.", rating: 5, date: "2 months ago" },
+                { id: 2, name: "Ananya Desai", role: "NGO Volunteer", image: "https://images.pexels.com/photos/1239288/pexels-photo-1239288.jpeg", storyImage: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", text: "I always wanted to help, but I didn't know who needed it the most. Benevia acts as the perfect bridge. It connects those who have surplus resources with those who are fighting for survival.", rating: 5, date: "1 month ago" },
+                { id: 3, name: "Amit Kumar", role: "Beneficiary", image: "https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80", storyImage: "https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", text: "During the flood crisis, this platform connected us with immediate help. The emergency response team provided food and shelter within hours. Lifesaver!", rating: 5, date: "3 weeks ago" }
+            ];
+            testimonials.forEach((testimonial, index) => {
+                const testimonialCard = document.createElement('div');
+                testimonialCard.className = 'testimonial-card';
+                testimonialCard.innerHTML = `<div class="testimonial-image"><img src="${testimonial.storyImage}" alt="${testimonial.name}'s story" loading="lazy"></div><div class="testimonial-content"><p class="testimonial-text">${testimonial.text}</p><div class="testimonial-author"><div class="author-avatar"><img src="${testimonial.image}" alt="${testimonial.name}" loading="lazy"></div><div class="author-info"><h4>${testimonial.name}</h4><div class="author-role">${testimonial.role} • ${testimonial.date}</div><div class="testimonial-rating">${'<span class="star-glow">🌟</span>'.repeat(testimonial.rating)}${'<span class="star-empty">☆</span>'.repeat(5 - testimonial.rating)}</div></div></div></div>`;
+                testimonialsGrid.appendChild(testimonialCard);
+                const dot = document.createElement('div');
+                dot.className = `testimonial-dot ${index === 0 ? 'active' : ''}`;
+                dot.dataset.index = index;
+                dot.addEventListener('click', () => { testimonialCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); document.querySelectorAll('.testimonial-dot').forEach(d => d.classList.remove('active')); dot.classList.add('active'); });
+                testimonialNav.appendChild(dot);
+            });
+        }
+
+        function loadInitialData() {
+            const mockStats = { totalDonations: 1247, restaurants: 342, organizations: 189, cities: 56 };
+            updateDonationCounter(mockStats);
+            const mockFeed = [
+                { userName: 'Hope Foundation', content: 'Thanks to generous donations, we provided meals to 150 people today! Your contributions are making a real difference in our community.', likes: 124, comments: 23 },
+                { userName: 'Community Kitchen', content: 'We need volunteers for our weekend food drive. If you have a few hours to spare, please sign up on our website.', likes: 89, comments: 15 },
+                { userName: 'Green Bites Restaurant', content: 'Donated 200 meals today through Benevia platform. Together we can fight food waste and hunger!', likes: 156, comments: 32 }
+            ];
+            displayFeed(mockFeed);
+            loadEvents();
+            createBarGraph('restaurants');
+            
+            // Force Button Render Check
+            setTimeout(() => {
+                 if (!currentUser && document.getElementById("authButtons").innerHTML.trim() === "") {
+                     updateUIForLoggedInUser(null);
+                 }
+            }, 1500);
+            
+            if (window.google) {
+                window.google.accounts.id.initialize({
+                    client_id: CLIENT_ID,
+                    callback: handleCredentialResponse
+                });
+                if (!currentUser) {
+                    window.google.accounts.id.renderButton(document.getElementById("authButtons"), { theme: "outline", size: "large" });
+                }
+            }
+            showToast('Data loaded successfully!', 'success');
+        }
+
+        function updateDonationCounter(stats) {
+            animateCount({id: 'foodCounter'}, stats.totalDonations, 2000);
+            setTimeout(() => { animateCount({id: 'restaurantCount'}, stats.restaurants, 1500); }, 500);
+            setTimeout(() => { animateCount({id: 'organizationCount'}, stats.organizations, 1500); }, 1000);
+            setTimeout(() => { animateCount({id: 'cityCount'}, stats.cities, 1500); }, 1500);
+        }
+
+        function displayFeed(posts) {
+            const socialFeed = document.getElementById('socialFeed');
+            socialFeed.innerHTML = '';
+            posts.forEach(post => {
+                const postHtml = `<div class="feed-item"><div class="feed-header"><div class="feed-avatar">${post.userName ? post.userName.charAt(0) : 'U'}</div><div class="feed-user"><div class="feed-username">${post.userName || 'User'}</div><div class="feed-time">Recently</div></div></div><div class="feed-content"><p>${post.content}</p></div><div class="feed-actions"><div class="feed-action"><i class="far fa-heart"></i><span>${post.likes || 0}</span></div><div class="feed-action"><i class="far fa-comment"></i><span>${post.comments || 0}</span></div><div class="feed-action"><i class="fas fa-share"></i><span>Share</span></div></div></div>`;
+                socialFeed.innerHTML += postHtml;
+            });
+        }
+
+        function loadEvents() {
+            const eventsList = document.getElementById('eventsList');
+            eventsList.innerHTML = '';
+            const events = [
+                { title: "Community Food Drive", date: "10", month: "JAN", location: "Downtown Plaza", time: "10 AM - 2 PM" },
+                { title: "Volunteer Training", date: "22", month: "MAR", location: "Community Center", time: "9 AM - 12 PM" },
+                { title: "Fundraising Gala", date: "15", month: "FEB", location: "Grand Hotel", time: "6 PM - 9 PM" }
+            ];
+            events.forEach(event => {
+                const eventHtml = `<div style="display: flex; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #eee;"><div style="background-color: var(--primary); color: white; padding: 0.5rem; border-radius: var(--radius); text-align: center; min-width: 60px; margin-right: 1rem;"><div style="font-weight: 700;">${event.date}</div><div style="font-size: 0.8rem;">${event.month}</div></div><div><div style="font-weight: 600; color: #374151;">${event.title}</div><div style="font-size: 0.9rem; color: #6B7280;">${event.location}, ${event.time}</div></div></div>`;
+                eventsList.innerHTML += eventHtml;
+            });
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            setupLogoFallback();
+            setupEventListeners();
+            loadTestimonials();
+            loadInitialData();
+            setupGraphObserver();
+            updateUIForLoggedInUser(null);
+            
+            // Wire up Buttons to Modals
+            document.getElementById('startDonatingBtn').onclick = window.openDonate;
+            document.getElementById('donateFoodBtn').onclick = window.openDonate;
+            document.getElementById('startFundraiserBtn').onclick = window.openFund;
+
+            // Tabs
+            document.querySelectorAll('.graph-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.graph-tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    createBarGraph(tab.dataset.category);
+                });
+            });
+
+            // Initial graph animate
+            setTimeout(() => {
+                const leaderboardSection = document.getElementById('leaderboardSection');
+                const rect = leaderboardSection.getBoundingClientRect();
+                if (rect.top >= 0 && rect.top <= window.innerHeight) animateGraph();
+            }, 1000);
+        });
+
+        // Event Listeners Function
+        function setupEventListeners() {
+            const scrollToId = (id) => {
+                const el = document.getElementById(id);
+                if(el) el.scrollIntoView({ behavior: 'smooth' });
+            };
+
+            document.getElementById('homeLink').addEventListener('click', (e) => { e.preventDefault(); scrollToId('homeSection'); });
+            document.getElementById('homeNav').onclick = () => scrollToId('homeSection');
+            document.getElementById('donateNav').onclick = () => scrollToId('counterSection'); 
+            document.getElementById('requestsNav').onclick = () => scrollToId('emergencySection');
+            document.getElementById('leaderboardNav').onclick = () => scrollToId('leaderboardSection');
+            document.getElementById('mapNav').onclick = () => scrollToId('mapSection');
+            document.getElementById('aboutNav').onclick = () => scrollToId('footerSection');
+
+            document.querySelectorAll('.feature-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const feature = card.dataset.feature;
+                    if(feature === 'food') scrollToId('counterSection');
+                    if(feature === 'social') scrollToId('feedSection');
+                    if(feature === 'leaderboard') scrollToId('leaderboardSection');
+                    if(feature === 'fundraising') scrollToId('feedSection');
+                    if(feature === 'location') scrollToId('mapSection');
+                    if(feature === 'emergency') scrollToId('emergencySection');
+                });
+            });
+
+            document.getElementById('learnMoreBtn').addEventListener('click', () => { document.getElementById('featuresSection').scrollIntoView({ behavior: 'smooth' }); });
+            
+            document.querySelectorAll('.map-filter').forEach(filter => {
+                filter.addEventListener('click', function() {
+                    document.querySelectorAll('.map-filter').forEach(f => f.classList.remove('active'));
+                    this.classList.add('active');
+                    window.showToast('Filter applied', 'success');
+                });
+            });
+            
+            document.getElementById('mapSearchBtn').addEventListener('click', () => { window.showToast('Searching...', 'info'); });
+            
+            document.querySelectorAll('.footer-nav').forEach(link => {
+                link.addEventListener('click', function(e) { e.preventDefault(); const sectionId = this.getAttribute('data-section') + 'Section'; document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' }); });
+            });
+            
+            document.getElementById('emergencyForm')?.addEventListener('submit', (e) => { e.preventDefault(); window.showToast('Emergency request submitted!', 'success'); document.getElementById('emergencyForm').reset(); });
+            
+            document.addEventListener('mouseover', function(e) { if (e.target.classList.contains('bar')) e.target.parentNode.querySelector('.bar-value').style.opacity = '1'; });
+            document.addEventListener('mouseout', function(e) { if (e.target.classList.contains('bar')) e.target.parentNode.querySelector('.bar-value').style.opacity = '0'; });
+        }
+    </script>
+</body>
+</html>
