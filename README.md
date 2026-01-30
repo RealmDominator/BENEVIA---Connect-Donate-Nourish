@@ -12,7 +12,7 @@
 
 ## 🌟 Overview
 
-The Sampoorna frontend is a modern web application designed with a mobile-first approach, ensuring seamless experiences across all devices. Built with progressive enhancement principles, it works beautifully even in low-bandwidth environments common in rural India.
+The Benevia frontend is a modern web application designed with a mobile-first approach, ensuring seamless experiences across all devices. Built with progressive enhancement principles, it works beautifully even in low-bandwidth environments common in rural India.
 
 ---
 
@@ -141,7 +141,7 @@ Update the API base URL in `assets/js/config.js`:
 javascript
 const CONFIG = {
   API_BASE_URL: 'http://localhost:5001/api',  // Development
-  // API_BASE_URL: 'https://api.sampoorna.org/api',  // Production
+  // API_BASE_URL: 'https://api.benevia.org/api',  // Production
   
   API_TIMEOUT: 30000,
   MAX_FILE_SIZE: 5 * 1024 * 1024, // 5MB
@@ -367,7 +367,7 @@ We welcome contributions to improve the frontend! Please follow these guidelines
 For frontend-specific issues or questions:
 
 - *Issues*: [GitHub Issues](https://github.com/yourusername/sampoorna/issues)
-- *Email*: shreyanshtripathi210@gmail.com
+- *Email*: ptripathi2511@gmail.com
 - *Documentation*: Check /docs folder for detailed guides
 
 ---
@@ -380,10 +380,10 @@ MIT License - See [LICENSE](../LICENSE) file for details
 
 <div align="center">
 
-*Sampoorna Frontend* - Designed with ❤️ for humanity
+*Benevia Frontend* - Designed with ❤️ for humanity
 
 Built with vanilla JavaScript • No frameworks • Pure performance
 
-[⭐ Star on GitHub](https://github.com/yourusername/sampoorna) | [🐛 Report Bug](https://github.com/yourusername/sampoorna/issues) | [💡 Suggest Feature](https://github.com/yourusername/sampoorna/issues)
+[⭐ Star on GitHub](https://github.com/yourusername/Benevia) | [🐛 Report Bug](https://github.com/yourusername/Benevia/issues) | [💡 Suggest Feature](https://github.com/yourusername/Benevia/issues)
 
 </div>
